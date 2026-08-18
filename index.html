@@ -1,245 +1,229 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="manifest" href="manifest.json">
-<title>AI</title>
-<style>
-*{box-sizing:border-box}
-body{
-  margin:0;
-  background:#0b0b0f;
-  color:#fff;
-  font-family:Arial,sans-serif;
-}
-  
-  
-header{
-  height:65px;
-display:flex;
-  align-items:center;
-  justify-content:center;
-  border-bottom:1px solid #292929;
-  font-size:23px;
-  font-weight:bold;
-  background:#101014;
-}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VG AI</title>
 
-#chat{
-  height:calc(100vh - 135px);
-  overflow-y:auto;
-  padding:18px;
-  padding-bottom:30px;
-}
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-.message{
-  max-width:88%;
-  padding:13px 16px;
-  margin:12px 0;
-  border-radius:18px;
-  line-height:1.5;
-  white-space:pre-wrap;
-  word-break:break-word;
-}
+    body {
+      margin: 0;
+      background: #09090d;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
 
-.ai{
-  background:#19191f;
-  border:1px solid #303038;
-  margin-right:auto;
-}
+    header {
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 1px solid #29292f;
+      font-size: 22px;
+      font-weight: bold;
+    }
 
-.user{
-  background:#fff;
-  color:#000;
-  margin-left:auto;
-}
+    #chat {
+      height: calc(100vh - 135px);
+      overflow-y: auto;
+      padding: 18px;
+      padding-bottom: 30px;
+    }
 
-.typing{
-  color:#aaa;
-  font-style:italic;
-}
+    .message {
+      max-width: 88%;
+      padding: 14px 16px;
+      margin: 12px 0;
+      border-radius: 18px;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
 
-.bottom{
-  position:fixed;
-  left:0;
-  right:0;
-  bottom:0;
-  padding:10px;
-  background:#0b0b0f;
-  border-top:1px solid #292929;
-}
+    .ai {
+      background: #19191f;
+      border: 1px solid #303038;
+      margin-right: auto;
+    }
 
-.input-area{
-  display:flex;
-  gap:8px;
-  max-width:900px;
-  margin:auto;
-}
+    .user {
+      background: white;
+      color: black;
+      margin-left: auto;
+    }
 
-#message{
-  flex:1;
-  min-width:0;
-  padding:14px 17px;
-  border:1px solid #383840;
-  border-radius:28px;
-  background:#17171c;
-  color:white;
-  outline:none;
-  font-size:16px;
-}
+    .typing {
+      color: #aaa;
+      font-style: italic;
+    }
 
-#message:focus{
-  border-color:#777;
-}
+    .bottom {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 10px;
+      background: #09090d;
+      border-top: 1px solid #29292f;
+    }
 
-#send{
-  border:0;
-  border-radius:28px;
-  padding:0 20px;
-  background:#fff;
-  color:#000;
-  font-weight:bold;
-}
+    .input-area {
+      display: flex;
+      gap: 8px;
+      max-width: 900px;
+      margin: auto;
+    }
 
-#clear{
-  display:block;
-  margin:7px auto 0;
-  border:0;
-  background:transparent;
-  color:#888;
-  font-size:12px;
-}
-</style>
+    input {
+      flex: 1;
+      padding: 16px;
+      border-radius: 30px;
+      border: 1px solid #444;
+      background: #19191f;
+      color: white;
+      font-size: 16px;
+      outline: none;
+    }
+
+    button {
+      padding: 0 25px;
+      border: none;
+      border-radius: 30px;
+      background: white;
+      color: black;
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    button:active {
+      transform: scale(.96);
+    }
+
+    .clear {
+      display: block;
+      margin: 8px auto 0;
+      background: transparent;
+      color: #888;
+      font-size: 13px;
+      padding: 4px 10px;
+    }
+  </style>
 </head>
 
 <body>
 
-<header><img src="icon-192.png" alt="AI Logo" style="width:45px;height:45px;margin-right:10px;"><span>VG AI</span></header><div id="chat">
-  <div class="message ai">
-    Hello! 👋
+<header>🤖 VG AI</header>
 
-    Main VG AI hoon.
+<div id="chat">
+
+  <div class="message ai">
+    Hello! 👋<br><br>
+    Main VG AI hoon.<br>
     Mujhse kuch bhi poochho. 🤖
   </div>
+
 </div>
 
 <div class="bottom">
+
   <div class="input-area">
     <input
-      id="message"
+      id="input"
       type="text"
       placeholder="VG AI se kuch poochho..."
       autocomplete="off"
     >
+
     <button id="send">Send</button>
   </div>
 
-  <button id="clear">Clear chat</button>
+  <button class="clear" id="clear">Clear chat</button>
+
 </div>
 
 <script>
-const input=document.getElementById("message");
-const send=document.getElementById("send");
-const chat=document.getElementById("chat");
-const clear=document.getElementById("clear");
+  const chat = document.getElementById("chat");
+  const input = document.getElementById("input");
+  const send = document.getElementById("send");
+  const clear = document.getElementById("clear");
 
-function addMessage(text,type){
-  const div=document.createElement("div");
-  div.className="message "+type;
-  div.textContent=text;
-  chat.appendChild(div);
-  chat.scrollTop=chat.scrollHeight;
-}
-
-function getReply(text){
-  const msg=text.toLowerCase();
-
-  if(msg.includes("hello")||msg.includes("hi")||msg.includes("hey")){
-    return "Hello! 👋 Main VG AI hoon. Kaise help karun?";
+  function addMessage(text, type) {
+    const div = document.createElement("div");
+    div.className = "message " + type;
+    div.textContent = text;
+    chat.appendChild(div);
+    chat.scrollTop = chat.scrollHeight;
+    return div;
   }
 
-  if(msg.includes("naam")){
-    return "Mera naam VG AI hai. 🤖";
+  async function sendMessage() {
+
+    const text = input.value.trim();
+
+    if (!text) return;
+
+    addMessage(text, "user");
+
+    input.value = "";
+    input.focus();
+
+    const typing = addMessage("VG AI soch raha hai... 🤔", "ai typing");
+
+    try {
+
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          message: text
+        })
+      });
+
+      const data = await response.json();
+
+      typing.remove();
+
+      if (data.reply) {
+        addMessage(data.reply, "ai");
+      } else {
+        addMessage("Sorry, AI se response nahi mila. 😕", "ai");
+      }
+
+    } catch (error) {
+
+      typing.remove();
+
+      addMessage(
+        "AI server se connection nahi ho pa raha. Thodi der baad try karo. 🔄",
+        "ai"
+      );
+
+    }
   }
 
-  if(msg.includes("kaise ho")){
-    return "Main bilkul ready hoon! 😎 Tum kya poochna chahte ho?";
-  }
+  send.addEventListener("click", sendMessage);
 
-  if(msg.includes("who are you")||msg.includes("tum kon")){
-    return "Main VG AI hoon — tumhari personal AI website. 🤖";
-  }
+  input.addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      sendMessage();
+    }
+  });
 
-  if(msg.includes("help")){
-    return "Bilkul! 😊 Tum mujhse questions, ideas, coding aur general information ke baare me pooch sakte ho.";
-  }
-
-  if(msg.includes("time")){
-    return "Main exact current time dekhne ke liye abhi internet se connected nahi hoon. ⏰";
-  }
-
-  if(msg.includes("thank")){
-    return "You're welcome! 😊";
-  }
-
-  if(msg.includes("coding")||msg.includes("code")){
-    return "Coding ke liye apna problem bhejo. 💻 Main explanation aur code example dene ki koshish karunga.";
-  }
-
-  if(msg.includes("joke")){
-    return "Teacher: Homework kahan hai?\nStudent: Sir, homework bhi online tha... network nahi tha! 😂";
-  }
-
-  if(msg.includes("good morning")){
-    return "Good morning! ☀️ Aaj VG AI me kuch naya banate hain!";
-  }
-
-  if(msg.includes("good night")){
-    return "Good night! 🌙 Kal phir milte hain. 🤖";
-  }
-
-  return "Interesting question! 🤔\n\nTumne poocha:\n"+text+
-  "\n\nMain abhi demo AI mode me hoon. Real online AI connection add karne par VG AI actual AI answers de sakta hai. 🚀";
-}
-
-function sendMessage(){
-  const text=input.value.trim();
-
-  if(!text)return;
-
-  addMessage(text,"user");
-  input.value="";
-  input.focus();
-
-  const typing=document.createElement("div");
-  typing.className="message ai typing";
-  typing.textContent="VG AI is thinking...";
-  chat.appendChild(typing);
-  chat.scrollTop=chat.scrollHeight;
-
-  setTimeout(()=>{
-    typing.remove();
-    addMessage(getReply(text),"ai");
-  },700);
-}
-
-send.addEventListener("click",sendMessage);
-
-input.addEventListener("keydown",(event)=>{
-  if(event.key==="Enter"){
-    event.preventDefault();
-    sendMessage();
-  }
-});
-
-clear.addEventListener("click",()=>{
-  chat.innerHTML="";
-  addMessage(
-    "Chat clear ho gaya! 👋\n\nMain VG AI hoon. Kuch poochho.",
-    "ai"
-  );
-});
+  clear.addEventListener("click", function() {
+    chat.innerHTML = `
+      <div class="message ai">
+        Chat clear ho gaya! 👋<br><br>
+        Main VG AI hoon. Kuch poochho. 🤖
+      </div>
+    `;
+  });
 </script>
 
 </body>
