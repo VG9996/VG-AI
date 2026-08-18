@@ -1,0 +1,10 @@
+{
+  "name": "VG AI",
+  "short_name": "VG AI",
+  "description": "VG AI - Simple AI Chatbot",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0b0b0b",
+  "theme_color": "#0b0b0b",
+  "orientation": "portrait"
+}
