@@ -1,85 +1,132 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VG AI</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VG AI</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<style>
+* {
+  box-sizing: border-box;
+}
 
-    body {
-      margin: 0;
-      background: #000;
-      color: white;
-      font-family: Arial, sans-serif;
-    }
+body {
+  margin: 0;
+  background: #000;
+  color: #fff;
+  font-family: Arial, sans-serif;
+}
 
-    header {
-      text-align: center;
-      padding: 20px;
-      font-size: 25px;
-      font-weight: bold;
-      border-bottom: 1px solid #333;
-    }
+header {
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 25px;
+  font-weight: bold;
+  border-bottom: 1px solid #292929;
+}
 
-    #chat {
-      height: calc(100vh - 140px);
-      overflow-y: auto;
-      padding: 15px;
-    }
+#chat {
+  height: calc(100vh - 145px);
+  overflow-y: auto;
+  padding: 18px;
+  padding-bottom: 25px;
+}
 
-    .message {
-      max-width: 85%;
-      padding: 12px;
-      margin: 10px 0;
-      border-radius: 15px;
-      line-height: 1.4;
-    }
+.message {
+  max-width: 85%;
+  padding: 13px 16px;
+  margin: 12px 0;
+  border-radius: 18px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
 
-    .ai {
-      background: #181818;
-      border: 1px solid #333;
-    }
+.ai {
+  background: #181818;
+  border: 1px solid #303030;
+  margin-right: auto;
+}
 
-    .user {
-      background: #333;
-      margin-left: auto;
-    }
+.user {
+  background: #fff;
+  color: #000;
+  margin-left: auto;
+}
 
-    .input-box {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      display: flex;
-      gap: 8px;
-      padding: 10px;
-      background: #000;
-    }
+.bottom {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #000;
+  border-top: 1px solid #292929;
+  padding: 10px;
+}
 
-    input {
-      flex: 1;
-      padding: 14px;
-      border-radius: 25px;
-      border: 1px solid #444;
-      background: #111;
-      color: white;
-      font-size: 16px;
-      outline: none;
-    }
+.input-area {
+  display: flex;
+  gap: 8px;
+  max-width: 900px;
+  margin: auto;
+}
 
-    button {
-      padding: 12px 18px;
-      border: none;
-      border-radius: 25px;
-      background: white;
-      color: black;
-      font-weight: bold;
-    }
-  </style>
+#message {
+  flex: 1;
+  min-width: 0;
+  padding: 14px 17px;
+  border-radius: 28px;
+  border: 1px solid #444;
+  background: #151515;
+  color: #fff;
+  font-size: 16px;
+  outline: none;
+}
+
+#message:focus {
+  border-color: #777;
+}
+
+#send {
+  border: none;
+  border-radius: 28px;
+  padding: 0 20px;
+  background: #fff;
+  color: #000;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+#clear {
+  display: block;
+  margin: 8px auto 0;
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 12px;
+}
+
+.typing {
+  color: #999;
+  font-style: italic;
+}
+
+@media (max-width: 500px) {
+  header {
+    font-size: 22px;
+  }
+
+  .message {
+    max-width: 90%;
+  }
+
+  #send {
+    padding: 0 16px;
+  }
+}
+</style>
 </head>
 
 <body>
@@ -88,4 +135,113 @@
 
 <div id="chat">
   <div class="message ai">
-    Hello!
+    Hello! 👋
+
+    Main VG AI hoon. Mujhse kuch bhi poochho.
+  </div>
+</div>
+
+<div class="bottom">
+
+  <div class="input-area">
+    <input
+      id="message"
+      type="text"
+      placeholder="VG AI se kuch poochho..."
+      autocomplete="off"
+    >
+
+    <button id="send">Send</button>
+  </div>
+
+  <button id="clear">Clear chat</button>
+
+</div>
+
+<script>
+const input = document.getElementById("message");
+const send = document.getElementById("send");
+const chat = document.getElementById("chat");
+const clear = document.getElementById("clear");
+
+function addMessage(text, type) {
+  const div = document.createElement("div");
+  div.className = "message " + type;
+  div.textContent = text;
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function getReply(text) {
+  const msg = text.toLowerCase();
+
+  if (msg.includes("hello") || msg.includes("hi")) {
+    return "Hello! 👋 Kaise ho? Main VG AI hoon.";
+  }
+
+  if (msg.includes("naam")) {
+    return "Mera naam VG AI hai. 🤖";
+  }
+
+  if (msg.includes("kaise ho")) {
+    return "Main bilkul ready hoon! 😎 Tum kya poochna chahte ho?";
+  }
+
+  if (msg.includes("help")) {
+    return "Bilkul! Apna question type karo aur Send dabao.";
+  }
+
+  if (msg.includes("thank")) {
+    return "You're welcome! 😊";
+  }
+
+  if (msg.includes("time")) {
+    return "Main abhi demo mode me hoon. Real-time features baad me connect kiye ja sakte hain.";
+  }
+
+  return "Tumne poocha: " + text +
+    "\n\nMain abhi VG AI demo mode me hoon. 🤖";
+}
+
+function sendMessage() {
+  const text = input.value.trim();
+
+  if (!text) return;
+
+  addMessage(text, "user");
+
+  input.value = "";
+
+  const typing = document.createElement("div");
+  typing.className = "message ai typing";
+  typing.textContent = "VG AI is thinking...";
+  chat.appendChild(typing);
+  chat.scrollTop = chat.scrollHeight;
+
+  setTimeout(function() {
+    typing.remove();
+    addMessage(getReply(text), "ai");
+  }, 700);
+}
+
+send.addEventListener("click", sendMessage);
+
+input.addEventListener("keydown", function(event) {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    sendMessage();
+  }
+});
+
+clear.addEventListener("click", function() {
+  chat.innerHTML = "";
+
+  addMessage(
+    "Chat clear ho gaya! 👋\n\nMain VG AI hoon. Kuch poochho.",
+    "ai"
+  );
+});
+</script>
+
+</body>
+</html>
