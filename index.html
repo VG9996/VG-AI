@@ -1,17 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  if (msg.includes("thank")) {
-    return "You're welcome! 😊";
-  }
+<title>VG AI</title>
 
-  if (msg.includes("time")) {
-    return "Main abhi demo mode me hoon. Real-time features baad me connect kiye ja sakte hain.";
-  }
-
-  return "Tumne poocha: " + text +
-    "\n\nMain abhi VG AI demo mode me hoon. 🤖";
+<style>
+* {
+  box-sizing: border-box;
 }
 
+body {
+  margin: 0;
+  background: #080808;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+header {
+  height: 65px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 18px;
+  border-bottom: 1px solid #252525;
+  background: #0b0b0b;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.logo span {
+  font-size: 25px;
+}
+
+#clear {
+  border: 1px solid #333;
+  background: #151515;
+  color: #aaa;
+  padding: 8px 12px;
+  border-radius: 18px;
+}
+
+#chat {
+  height: calc(100vh - 145px);
+  overflow-y: auto;
+  padding: 18px;
+  padding-bottom: 30px;
+}
+
+.welcome {
+  text-align: center;
+  margin: 50px 15px 25px;
+}
+
+.welcome h1 {
+  font-size: 30px;
+  margin-bottom: 10px;
+}
+
+.welcome p {
+  color: #999;
+}
+
+.message {
+  max-width: 88%;
+  padding: 13px 15px;
+  margin: 12px 0;
+  border-radius: 18px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.ai {
+  background: #181818;
+  border: 1px solid #303030;
+  margin-right: auto;
+}
+
+.user {
+  background: white;
+  color: black;
+  margin-left: auto;
+}
+
+.copy {
+  margin-top: 8px;
+  border: 1px solid #444;
+  background: #222;
+  color: #ccc;
+  border-radius: 12px;
+  padding: 5px 9px;
+  font-size: 11px;
+}
+
+.typing {
+  color: #999;
+  font-style: italic;
+}
+
+.bottom {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 10px;
+  background: #080808;
+  border-top: 1px solid #252525;
+}
+
+.input-area {
+  display: flex;
+  gap: 8px;
+  max-width: 900px;
+  margin: auto;
+}
+
+#message {
+  flex: 1;
+  min-width: 0;
+  padding: 14px 17px;
+  border-radius: 28px;
+  border: 1px solid #383838;
+  background: #151515;
+  color: white;
+  outline: none;
+  font-size: 16px;
+}
+
+#message:focus {
+  border-color: #777;
+}
+
+#send {
+  border: none;
+  border-radius: 28px;
+  padding: 0 20px;
+  background: white;
+  color: black;
+  font-weight: bold;
+}
+
+#send:active {
+  transform: scale(.96);
+}
+
+@media(max-width:500px) {
+  .message {
+    max-width: 92%;
+  }
+
+  .welcome h1 {
+    font-size: 26px;
+  }
+
+  #send {
+    padding: 0 16px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo"><span>🤖</span> VG AI</div>
+  <button id="clear">Clear</button>
+</header>
+
+<div id="chat">
+
+  <div class="welcome">
+    <h1>👋 Hello!</h1>
+    <p>Main VG AI hoon. Mujhse kuch bhi poochho.</p>
+  </div>
+
+  <div class="message ai">
+    Namaste! 🤖<br><br>
+    Main tumhari help karne ke liye ready hoon.
+    Tum question, coding, ideas, maths ya general knowledge pooch sakte ho.
+  </div>
+
+</div>
+
+<div class="bottom">
+
+  <div class="input-area">
+
+    <input
+      id="message"
+      type="text"
+      placeholder="VG AI se kuch poochho..."
+      autocomplete="off"
+    >
+
+    <button id="send">Send</button>
+
+  </div>
+
+</div>
+
+<script>
+
+const input = document.getElementById("message");
+const send = document.getElementById("send");
+const chat = document.getElementById("chat");
+const clear = document.getElementById("clear");
+
+
+function addMessage(text, type) {
+
+  const box = document.createElement("div");
+  box.className = "message " + type;
+
+  const content = document.createElement("div");
+  content.textContent = text;
+
+  box.appendChild(content);
+
+  if (type === "ai") {
+
+    const copy = document.createElement("button");
+
+    copy.className = "copy";
+    copy.textContent = "Copy";
+
+    copy.onclick = function() {
+
+      navigator.clipboard.writeText(text);
+
+      copy.textContent = "Copied ✓";
+
+      setTimeout(function() {
+        copy.textContent = "Copy";
+      }, 1200);
+
+    };
+
+    box.appendChild(copy);
+  }
+
+  chat.appendChild(box);
+
+  chat.scrollTop = chat.scrollHeight;
+}
+
+
+function getReply(text) {
+
+  const msg = text.toLowerCase().trim();
+
+
+  if (
+    msg.includes("hello") ||
+    msg.includes("hi") ||
+    msg.includes("hey") ||
+    msg.includes("namaste")
+  ) {
+    return "Hello! 👋 Main VG AI hoon. Batao, aaj kya karna hai?";
+  }
+
+
+  if (
+    msg.includes("kaise ho") ||
+    msg.includes("how are you")
+  ) {
+    return "Main bilkul ready hoon 😎 Tumhara question bhejo!";
+  }
+
+
+  if (
+    msg.includes("naam") ||
+    msg.includes("name")
+  ) {
+    return "Mera naam VG AI 🤖 hai.";
+  }
+
+
+  if (
+    msg.includes("who are you") ||
+    msg.includes("tum kon")
+  ) {
+    return "Main VG AI hoon — tumhara personal AI assistant. 🤖";
+  }
+
+
+  if (msg.includes("help")) {
+    return "Bilkul! 😊 Tum mujhe questions, coding problems, ideas, maths aur general knowledge ke questions bhej sakte ho.";
+  }
+
+
+  if (
+    msg.includes("thank") ||
+    msg.includes("thanks")
+  ) {
+    return "You're welcome! 😄";
+  }
+
+
+  if (
+    msg.includes("time") ||
+    msg.includes("samay")
+  ) {
+    return "Main abhi browser-only mode me hoon. Exact live time ke liye phone ki clock check karo. ⏰";
+  }
+
+
+  if (
+    msg.includes("html") ||
+    msg.includes("css") ||
+    msg.includes("javascript") ||
+    msg.includes("coding")
+  ) {
+    return "Coding me main tumhari help kar sakta hoon. 💻\n\nApna code ya error yahan paste karo aur batao kya banana hai.";
+  }
+
+
+  if (
+    msg.includes("math") ||
+    msg.includes("plus") ||
+    msg.includes("minus")
+  ) {
+    return "Maths question bhejo 🧮\n\nExample: 25 × 18\nYa: 125 + 378";
+  }
+
+
+  if (
+    msg.includes("website") ||
+    msg.includes("web")
+  ) {
+    return "Website banane ke liye HTML + CSS + JavaScript use kar sakte ho. 🌐\n\nMain tumhare liye design aur code dono bana sakta hoon.";
+  }
+
+
+  if (
+    msg.includes("app") ||
+    msg.includes("application")
+  ) {
+    return "App banane ke liye hum isi VG AI website ko aage PWA/app me convert kar sakte hain. 📱";
+  }
+
+
+  if (
+    msg.includes("joke") ||
+    msg.includes("jokes")
+  ) {
+    return "Teacher: Homework kahan hai?\nStudent: Sir, homework bhi online hai... mil nahi raha. 😂";
+  }
+
+
+  if (
+    msg.includes("good morning") ||
+    msg.includes("morning")
+  ) {
+    return "Good morning! ☀️ Aaj VG AI me kuch naya banate hain!";
+  }
+
+
+  return "Interesting question! 🤔\n\nTumne poocha:\n" +
+         text +
+         "\n\nMain abhi demo mode me hoon. Real online AI connection add karne ke baad VG AI tumhare questions ke actual AI answers de sakega. 🤖";
+}
+
+
 function sendMessage() {
+
   const text = input.value.trim();
 
   if (!text) return;
@@ -20,35 +377,61 @@ function sendMessage() {
 
   input.value = "";
 
+  input.focus();
+
+
   const typing = document.createElement("div");
+
   typing.className = "message ai typing";
+
   typing.textContent = "VG AI is thinking...";
+
   chat.appendChild(typing);
+
   chat.scrollTop = chat.scrollHeight;
 
+
   setTimeout(function() {
+
     typing.remove();
-    addMessage(getReply(text), "ai");
+
+    const answer = getReply(text);
+
+    addMessage(answer, "ai");
+
   }, 700);
+
 }
+
 
 send.addEventListener("click", sendMessage);
 
+
 input.addEventListener("keydown", function(event) {
+
   if (event.key === "Enter") {
+
     event.preventDefault();
+
     sendMessage();
+
   }
+
 });
 
+
 clear.addEventListener("click", function() {
+
   chat.innerHTML = "";
 
   addMessage(
     "Chat clear ho gaya! 👋\n\nMain VG AI hoon. Kuch poochho.",
     "ai"
   );
+
 });
+
+
 </script>
 
 </body>
